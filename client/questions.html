@@ -1,0 +1,103 @@
+<head>
+  <title>SoClass</title>
+</head>
+
+<body>
+  <div id="top-tag-filter">
+    {{> tag_filter}}
+  </div>
+
+  <div id="main-pane">
+    {{> Questions}}
+  </div>
+
+  <div id="side-pane">
+    {{> lists}}
+  </div>
+</body>
+
+<template name="lists">
+  <h3>Courses</h3>
+  <div id="lists">
+    {{#each lists}}
+      <div class="list {{selected}}">
+        {{#if editing}}
+          <div class="edit">
+            <input class="list-name-input" id="list-name-input" type="text" value="{{name}}" />
+          </div>
+        {{else}}
+          <div class="display">
+            <a class="list-name {{name_class}}" href="/{{_id}}">
+              {{name}}
+            </a>
+          </div>
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+  <div id="createList">
+    <input type="text" id="new-list" placeholder="new course" />
+  </div>
+</template>
+
+<template name="Questions">
+  {{#if any_list_selected}}
+  <div id="items-view">
+    <div id="new-question-box">
+      <input type="text" id="new-question" placeholder="new question..." />
+    </div>
+    <ul id="item-list">
+      {{#each Questions}}
+        {{> question_item}}
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
+</template>
+
+<template name="question_item">
+  <li class="question {{done_class}}">
+    <div class="display">
+      <div class="question-text">{{student}} : {{text}}</div>
+    </div>
+    <div class="item-tags">
+      {{#each tag_objs}}
+        <div class="tag removable_tag">
+          <div class="name">{{tag}}</div>
+          <div class="remove"></div>
+        </div>
+      {{/each}}
+      {{#if adding_tag}}
+        <div class="tag edittag">
+          <input type="text" id="edittag-input" value="" />
+        </div>
+      {{else}}
+        <div class="tag addtag">
+          +tag
+        </div>
+      {{/if}}
+    </div>
+  </li>
+  <div class="answers-area" id="answers-area-{{timestamp}}">
+    <div class="new-answer-box" id="box{{timestamp}}">
+      <input type="text" class="answer-box" id="new-answer-{{timestamp}}" placeholder="type an answer" />
+    </div>
+    <ul class="answers-list">
+      {{#each answer_objs}}
+        <li class="answer" id="answer-{{timestamp}}">{{answer.student}} : {{answer.answer}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="tag_filter">
+  <div id="tag-filter" class="tag-list">
+    <div class="label">Show:</div>
+    {{#each tags}}
+      <div class="tag {{selected}}">
+        {{tag_text}} <span class="count">({{count}})</span>
+      </div>
+    {{/each}}
+  </div>
+</template>
+
